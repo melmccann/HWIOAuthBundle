@@ -12,6 +12,7 @@
 namespace HWI\Bundle\OAuthBundle\Tests\DependencyInjection;
 
 use Http\Client\Common\HttpMethodsClient;
+use Http\HttplugBundle\HttplugBundle;
 use HWI\Bundle\OAuthBundle\DependencyInjection\HWIOAuthExtension;
 use HWI\Bundle\OAuthBundle\OAuth\ResourceOwnerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -398,8 +399,6 @@ class HWIOAuthExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertParameter(false, 'hwi_oauth.connect');
 
-        $this->assertParameter('twig', 'hwi_oauth.templating.engine');
-
         $this->assertAlias('security.user_checker', 'hwi_oauth.user_checker');
     }
 
@@ -688,6 +687,10 @@ EOF;
         parent::setUp();
 
         $this->containerBuilder = new ContainerBuilder();
+
+        $this->containerBuilder->setParameter('kernel.bundles', [
+            'HttplugBundle' => new HttplugBundle(),
+        ]);
     }
 
     protected function tearDown()
